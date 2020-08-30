@@ -56,26 +56,26 @@ namespace Spine.Unity.Examples {
 		}
 
 		void Update () {
-			float x = Input.GetAxisRaw("Horizontal");
-			if (Input.GetKey(walkButton)) {
-				x *= 0.4f;
-			}
-
-			speed.x = x;
-
-			// Flip skeleton.
-			// if (x != 0) {
-			// 	animationHandle.SetFlip(x);
+			// float x = Input.GetAxisRaw("Horizontal");
+			// if (Input.GetKey(walkButton)) {
+			// 	x *= 0.4f;
 			// }
 
-			if (Input.GetKeyDown(jumpButton)) {
-				if (isGrounded)
-					StartCoroutine(FakeJump());
-			}
+			// speed.x = x;
 
-			logicAnimator.SetFloat(horizontalSpeedProperty, Mathf.Abs(speed.x));
-			logicAnimator.SetFloat(verticalSpeedProperty, speed.y);
-			logicAnimator.SetBool(groundedProperty, isGrounded);
+			// // Flip skeleton.
+			// // if (x != 0) {
+			// // 	animationHandle.SetFlip(x);
+			// // }
+
+			// if (Input.GetKeyDown(jumpButton)) {
+			// 	if (isGrounded)
+			// 		StartCoroutine(FakeJump());
+			// }
+
+			// logicAnimator.SetFloat(horizontalSpeedProperty, Mathf.Abs(speed.x));
+			// logicAnimator.SetFloat(verticalSpeedProperty, speed.y);
+			// logicAnimator.SetBool(groundedProperty, isGrounded);
 		}
 
 		IEnumerator FakeJump () {
