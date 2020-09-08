@@ -9,10 +9,12 @@ public enum PlayerMovementStates {
 }
 
 [RequireComponent(typeof(CharacterController2D))]
+[RequireComponent(typeof(Actor))]
 public class PlayerController : StateKitLite<PlayerMovementStates>
 {
     [Header("Misc References")]
     public CharacterController2D characterController2d;
+    private Actor actor;
 
     [Header("Input")]
     public Vector2 movementInput;
@@ -36,6 +38,9 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
     [Header("Stats")]
     public int HP;
 
+    [Header("Art")]
+    public Transform characterBody;
+
     [Header("Animation")]
     public Animator animator;
     public string speedProperty = "speed";
@@ -46,6 +51,9 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 
     protected override void Awake(){
         base.Awake();
+
+        actor = GetComponent<Actor>();
+        actor.OnDie += HandleDeath;
 
         characterController2d = GetComponent<CharacterController2D>();
 
@@ -59,9 +67,15 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
         initialState = PlayerMovementStates.Idle;
     }
 
+    
     protected override void Update(){
         base.Update();
 
+        if(velocity.x > 0 && characterBody.eulerAngles.y != 0){
+            characterBody.eulerAngles = Vector3.up * 0;
+        }else if(velocity.x < 0 && characterBody.eulerAngles.y != 180){
+            characterBody.eulerAngles = Vector3.up * 180;
+        }
         animator.SetFloat(speedProperty, Mathf.Abs(movementInput.x));
         animator.SetFloat(verticalSpeedProperty, movementInput.y);
         animator.SetBool(groundedProperty, characterController2d.isGrounded);
@@ -129,6 +143,7 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 	void Jumping_Enter() {
         velocity.y = JumpSpeed;
     }
+
 	void Jumping_Tick() {
 
         if(!jumpInput){
@@ -176,19 +191,23 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 
     // Hurt
 	void Hurt_Enter() {}
-	void Hurt_Tick() {
+	
+    void Hurt_Tick() {
         DoVelocityMovement();
         ApplyGravity();
     }
-	void Hurt_Exit() {}
+	
+    void Hurt_Exit() {}
 
     // Dead
 	void Dead_Enter() {}
-	void Dead_Tick() {
+	
+    void Dead_Tick() {
         DoVelocityMovement();
         ApplyGravity();
     }
-	void Dead_Exit() {}
+	
+    void Dead_Exit() {}
 
     public bool CheckForJump(){
         if(jumpInput){
@@ -206,10 +225,6 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
         }
         return false;
     }
-
-    // public void ApplyHorizontalInput(){
-    //     velocity.x = Gravity * Time.deltaTime;
-    // }
 
     public void ApplyGravity(){
         velocity.y -= Gravity * Time.deltaTime;
@@ -234,5 +249,9 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 
     public void DoVelocityMovement(){
         characterController2d.Move(velocity * Time.deltaTime);
+    }
+
+    public void HandleDeath(){
+        Debug.Log("DEAD");
     }
 }
