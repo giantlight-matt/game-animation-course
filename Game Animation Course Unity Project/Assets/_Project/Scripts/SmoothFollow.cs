@@ -7,11 +7,22 @@ public class SmoothFollow : MonoBehaviour
     public Transform target;
     public Vector3 offset;
     public float smoothTime = 0.3F;
+    public float followSpeedModifier = 20f;
     private Vector3 velocity = Vector3.zero;
+
+    void Start(){
+        transform.position = GetTargetPosition();
+    }
 
     void Update()
     {
-        Vector3 targetPosition = target.position + offset;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+        var newPosition = Vector3.SmoothDamp(transform.position, GetTargetPosition(), ref velocity, smoothTime);
+        // var newPosition = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSpeedModifier);
+
+        transform.position = newPosition;
+    }
+
+    public Vector3 GetTargetPosition(){
+        return target.position + offset;
     }
 }

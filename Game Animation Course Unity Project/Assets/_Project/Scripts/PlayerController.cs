@@ -90,11 +90,15 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
     }
 
 	private void OnEnable(){
-		playerInputActions.Enable();
+        if(playerInputActions != null){
+		    playerInputActions.Enable();
+        }
 	}
 
 	private void OnDisable(){
-		playerInputActions.Disable();
+        if(playerInputActions != null){
+    		playerInputActions.Disable();
+        }
 	}
 
     // StateKitLite States
@@ -250,7 +254,6 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 			velocity.x = Mathf.SmoothDamp(velocity.x, 0 + _uncontrollableVelocity.x, ref DeaccelerationVol, Deacceleration);
 		}else{
 			velocity.x = Mathf.SmoothDamp(velocity.x, (movementInput.x * MovementSpeed) + _uncontrollableVelocity.x, ref DeaccelerationVol, Deacceleration);
-			// velocity.x = Mathf.Lerp(velocity.x, (input.x * MovementSpeed) + _uncontrollableVelocity.x, Time.deltaTime * 20);
 		}
 		_uncontrollableVelocity.x = Mathf.SmoothDamp(_uncontrollableVelocity.x, 0, ref UncontrollableDeaccelerationVol, UncontrollableDeacceleration);
 	}
@@ -263,6 +266,7 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
         velocity = Vector2.zero;
         currentState = PlayerMovementStates.Dead;
         animator.SetTrigger(deadProperty);
-        Debug.Log("DEAD");
+        GameManager.Instance.HandleLose();
     }
+
 }

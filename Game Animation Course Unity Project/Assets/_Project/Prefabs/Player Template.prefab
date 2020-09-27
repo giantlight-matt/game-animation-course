@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 2050863415278528876}
   - component: {fileID: 2050863415278528877}
   - component: {fileID: 2050863415278528864}
+  - component: {fileID: 869662667}
   m_Layer: 8
-  m_Name: Spine GameObject (hero-pro)
+  m_Name: Spine GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0d4607d34a1c41bf8028d4531624245, type: 2}
+  - {fileID: 2100000, guid: 34c9a83f315a8486b91e7c5109ec7ed2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,10 +112,10 @@ Animator:
   m_GameObject: {fileID: 2050863415278528871}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 11ebd9d3fa80c41d081fc67c83ecddcc, type: 2}
+  m_Controller: {fileID: 9100000, guid: e70bfe684715849c3a19968ca6371fed, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9db98c60740638449864eb028fbe7ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 9787d2cad7ad6405f9391a26eceaf17b, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 8c8244d9ca0954bd6a57fb87c92eccbf, type: 2}
   initialSkinName: 
   initialFlipX: 0
   initialFlipY: 0
@@ -160,6 +161,24 @@ MonoBehaviour:
     useCustomMixMode: 1
     layerMixModes: 00000000
     layerBlendModes: 01000000
+--- !u!114 &869662667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050863415278528871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95813afe390494344a6ce2cbc8bfb7d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootMotionBoneName: root
+  transformPositionX: 1
+  transformPositionY: 1
+  rigidBody2D: {fileID: 2050863415468259127}
+  rigidBody: {fileID: 0}
+  mecanimLayerFlags: -1
 --- !u!1 &2050863415809733174
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,6 +192,7 @@ GameObject:
   - component: {fileID: 2050863415468259128}
   - component: {fileID: 2050863415468259126}
   - component: {fileID: 3782407670247047612}
+  - component: {fileID: 1801641826}
   m_Layer: 8
   m_Name: Player Template
   m_TagString: Untagged
@@ -230,7 +250,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.6}
+  m_Offset: {x: 0, y: 0.64}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -241,7 +261,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1.23}
   m_EdgeRadius: 0
 --- !u!114 &2050863415468259126
 MonoBehaviour:
@@ -319,22 +339,35 @@ MonoBehaviour:
   characterController2d: {fileID: 2050863415468259126}
   movementInput: {x: 0, y: 0}
   jumpInput: 0
-  Gravity: 60
-  MovementSpeed: 10
+  Gravity: 30
+  MovementSpeed: 6
   Deacceleration: 0.1
   DeaccelerationVol: 0
   velocity: {x: 0, y: 0}
   UncontrollableDeacceleration: 0.1
   UncontrollableDeaccelerationVol: 0
-  JumpSpeed: 25
+  JumpSpeed: 15
   jump_clear: 1
   HP: 0
   characterBody: {fileID: 2050863415278528867}
   animator: {fileID: 2050863415278528877}
   speedProperty: speed
+  measuredVelocityProperty: measuredVelocity
   verticalSpeedProperty: vertical
   groundedProperty: grounded
   deadProperty: dead
+--- !u!114 &1801641826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050863415809733174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec75d3f3881d4f4e9fa74447c71e666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2050863415834366818
 GameObject:
   m_ObjectHideFlags: 0

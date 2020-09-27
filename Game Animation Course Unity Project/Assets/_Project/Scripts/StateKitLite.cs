@@ -88,7 +88,7 @@ namespace Prime31.StateKitLite
 		{
 			elapsedTimeInState += Time.deltaTime;
 
-			if( _stateMethods.tick != null )
+			if( _stateMethods != null && _stateMethods.tick != null )
 				_stateMethods.tick();
 		}
 
