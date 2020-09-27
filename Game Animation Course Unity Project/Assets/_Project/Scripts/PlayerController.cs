@@ -37,6 +37,7 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 
     [Header("Stats")]
     public int HP;
+    bool isDead = false;
 
     [Header("Art")]
     public Transform characterBody;
@@ -44,6 +45,7 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
     [Header("Animation")]
     public Animator animator;
     public string speedProperty = "speed";
+    public string measuredVelocityProperty = "measuredVelocity";
     public string verticalSpeedProperty = "vertical";
     public string groundedProperty = "grounded";
     public string deadProperty = "dead";
@@ -76,8 +78,14 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
         }else if(velocity.x < 0 && characterBody.eulerAngles.y != 180){
             characterBody.eulerAngles = Vector3.up * 180;
         }
+
+        if(characterController2d.isGrounded && velocity.y < 0){
+            velocity.y = -.1f;
+        }
+
         animator.SetFloat(speedProperty, Mathf.Abs(movementInput.x));
-        animator.SetFloat(verticalSpeedProperty, movementInput.y);
+        animator.SetFloat(measuredVelocityProperty, Mathf.Abs(velocity.x));
+        animator.SetFloat(verticalSpeedProperty, velocity.y);
         animator.SetBool(groundedProperty, characterController2d.isGrounded);
     }
 
@@ -252,6 +260,9 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
     }
 
     public void HandleDeath(){
+        velocity = Vector2.zero;
+        currentState = PlayerMovementStates.Dead;
+        animator.SetTrigger(deadProperty);
         Debug.Log("DEAD");
     }
 }
