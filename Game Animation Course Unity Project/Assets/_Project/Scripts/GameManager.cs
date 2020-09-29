@@ -21,9 +21,7 @@ public class GameManager : Singleton<GameManager>
         FXManager.Instance.FadeOut(transitionDuration);
         yield return new WaitForSeconds(transitionDuration);
 
-        yield return SceneManager.UnloadSceneAsync(gameObject.scene);
-        yield return SceneManager.LoadSceneAsync(newSceneName);
-
+        yield return SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Single);
     }
 
     public void HandleWin(string nextSceneName){
