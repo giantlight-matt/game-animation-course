@@ -116,7 +116,7 @@ MonoBehaviour:
       m_Calls: []
   AffectedLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 256
 --- !u!114 &5736571653156962969
 MonoBehaviour:
   m_ObjectHideFlags: 0

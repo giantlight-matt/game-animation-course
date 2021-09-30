@@ -7,16 +7,21 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
+	[Header("UI References")]
 	public Text scoreText;
 	public CanvasGroup pauseUI;
+	public Text descriptionText;
+	public CanvasGroup descriptionCanvasGroup;
 
 	private int score = 0;
 	private bool isPauseVisible;
 
 	public IEnumerator Start()
 	{
+		// Reset some UI state
 		UpdateScoreUI();
 		UpdatePauseVisibility();
+		HideDescription();
 
 		FXManager.Instance.JumpToBlack();
 		yield return null;
@@ -135,4 +140,20 @@ public class GameManager : Singleton<GameManager>
 		Application.Quit();
 	}
 
+	public void ShowDescription(string text)
+	{
+		descriptionText.text = text;
+		descriptionCanvasGroup.alpha = 1;
+		descriptionCanvasGroup.interactable = true;
+		descriptionCanvasGroup.blocksRaycasts = true;
+		descriptionCanvasGroup.gameObject.SetActive(true);
+	}
+
+	public void HideDescription()
+	{
+		descriptionCanvasGroup.alpha = 0;
+		descriptionCanvasGroup.interactable = false;
+		descriptionCanvasGroup.blocksRaycasts = false;
+		descriptionCanvasGroup.gameObject.SetActive(false);
+	}
 }
