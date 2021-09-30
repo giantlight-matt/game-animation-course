@@ -30,6 +30,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Walk",
+                    "type": "Button",
+                    "id": "c20cb810-7a70-4f86-8ab7-a1dc270ff0a3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "ef063b41-cb80-4378-b3b3-f038e1e80f19",
@@ -278,6 +286,28 @@
                     "processors": "",
                     "groups": ";Touch",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a5aa6f8-8b59-4992-bafa-59897c41266c",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24042bd2-2472-48a4-8db0-f84a5990eabf",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

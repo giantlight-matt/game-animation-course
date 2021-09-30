@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Prime31;
 using Prime31.StateKitLite;
+using static UnityEngine.InputSystem.InputAction;
 
 public enum PlayerMovementStates
 {
@@ -25,12 +26,18 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 
 	[Header("Input")]
 	public Vector2 movementInput;
+	public Vector2 modifiedMovementInput;
 	public bool jumpInput;
+	public bool shouldWalk;
 	PlayerInputActions playerInputActions;
 
 	[Header("Movement")]
 	public float Gravity = 20f;
 	public float MovementSpeed = 10;
+
+	[Range(.1f, .49f)]
+	public float walkSpeedModifier = .4f;
+
 	public float Deacceleration = .1f;
 	public float DeaccelerationVol = 0f;
 	public Vector2 velocity;
@@ -67,9 +74,14 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 		characterController2d = GetComponent<CharacterController2D>();
 
 		playerInputActions = new PlayerInputActions();
-		playerInputActions.Player.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+		playerInputActions.Player.Move.performed += HandleMovePerformed;
+		playerInputActions.Player.Move.canceled += HandleMoveCanceled;
+
 		playerInputActions.Player.Jump.started += ctx => jumpInput = true;
 		playerInputActions.Player.Jump.canceled += ctx => jumpInput = false;
+
+		playerInputActions.Player.Walk.started += ctx => shouldWalk = true;
+		playerInputActions.Player.Walk.canceled += ctx => shouldWalk = false;
 	}
 
 	public void Start()
@@ -77,9 +89,27 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 		initialState = PlayerMovementStates.Idle;
 	}
 
+	private bool isMovePerformed = false;
+	public void HandleMovePerformed(CallbackContext ctx)
+	{
+		isMovePerformed = true;
+		movementInput = ctx.ReadValue<Vector2>();
+	}
+
+	public void HandleMoveCanceled(CallbackContext ctx)
+	{
+		isMovePerformed = false;
+	}
+
 	protected override void Update()
 	{
 		base.Update();
+
+		modifiedMovementInput = movementInput;
+		if (shouldWalk)
+		{
+			modifiedMovementInput.x *= walkSpeedModifier;
+		}
 
 		if (velocity.x > 0 && characterBody.eulerAngles.y != 0)
 		{
@@ -95,7 +125,7 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 			velocity.y = -.1f;
 		}
 
-		animator.SetFloat(speedProperty, Mathf.Abs(movementInput.x));
+		animator.SetFloat(speedProperty, Mathf.Abs(modifiedMovementInput.x));
 		animator.SetFloat(measuredVelocityProperty, Mathf.Abs(velocity.x));
 		animator.SetFloat(verticalSpeedProperty, velocity.y);
 		animator.SetBool(groundedProperty, characterController2d.isGrounded);
@@ -299,7 +329,7 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 		}
 		else
 		{
-			velocity.x = Mathf.SmoothDamp(velocity.x, (movementInput.x * MovementSpeed) + _uncontrollableVelocity.x, ref DeaccelerationVol, Deacceleration);
+			velocity.x = Mathf.SmoothDamp(velocity.x, (modifiedMovementInput.x * MovementSpeed) + _uncontrollableVelocity.x, ref DeaccelerationVol, Deacceleration);
 		}
 		_uncontrollableVelocity.x = Mathf.SmoothDamp(_uncontrollableVelocity.x, 0, ref UncontrollableDeaccelerationVol, UncontrollableDeacceleration);
 	}
