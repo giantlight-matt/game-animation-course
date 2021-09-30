@@ -44,6 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UI
+    uniqueID: 1308897153
+    locked: 0
   - name: Above Everything
     uniqueID: 4010841755
     locked: 0
