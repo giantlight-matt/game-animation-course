@@ -106,9 +106,17 @@ public class PlayerController : StateKitLite<PlayerMovementStates>
 		base.Update();
 
 		modifiedMovementInput = movementInput;
+
+		// walk
 		if (shouldWalk)
 		{
 			modifiedMovementInput.x *= walkSpeedModifier;
+		}
+
+		// jitter threshold
+		if (Mathf.Abs(movementInput.x) < .1f)
+		{
+			modifiedMovementInput.x = 0f;
 		}
 
 		if (velocity.x > 0 && characterBody.eulerAngles.y != 0)
